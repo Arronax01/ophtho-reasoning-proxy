@@ -27,12 +27,17 @@ def reason(body: ReasonReq, authorization: str | None = Header(default=None)):
     if not OPENAI_API_KEY:
         raise HTTPException(status_code=500, detail="Missing OPENAI_API_KEY")
 
-    payload = {"model": body.model,
-               "input": [{"role": "user", "content": body.prompt}],
-               "temperature": body.temperature}
+    payload = {
+        "model": body.model,
+        "input": [{"role": "user", "content": body.prompt}],
+        "temperature": body.temperature
+    }
 
-    r = requests.post(OPENAI_URL, json=payload,
-                      headers={"Authorization": f"Bearer {OPENAI_API_KEY}"})
+    r = requests.post(
+        OPENAI_URL,
+        json=payload,
+        headers={"Authorization": f"Bearer {OPENAI_API_KEY}"}
+    )
     if r.status_code != 200:
         raise HTTPException(status_code=500, detail=r.text)
 
